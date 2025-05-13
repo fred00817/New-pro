@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Health & Longevity Predictor</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Open+Sans:wght@400;600&family=Montserrat:wght@700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f4f6f9;
+      color: #333;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    header, main, footer {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .container {
+      background-color: #00008B;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      margin-top: 20px;
+      animation: slideIn 1s ease-out;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    header h2 {
+      text-align: center;
+      font-size: 1.8em;
+      font-family: 'Montserrat', sans-serif;
+      color: white;
+      margin-bottom: 30px;
+    }
+
+    fieldset {
+      border: none;
+    }
+
+    legend {
+      font-size: 1.4em;
+      font-weight: 700;
+      color: white;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    label {
+      font-size: 1em;
+      margin-bottom: 10px;
+      color: white;
+      font-weight: 600;
+      display: block;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      font-size: 1em;
+      font-family: 'Century Gothic', sans-serif;
+      color: black;
+      outline: none;
+      transition: border 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #4caf50;
+    }
+
+    .button-group {
+      text-align: center;
+    }
+
+    button {
+      width: 45%;
+      background-color: yellow;
+      color: black;
+      padding: 10px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease,
+        box-shadow 0.3s ease;
+      margin: 10px;
+    }
+
+    button:hover {
+      background-color: gold;
+      transform: scale(1.1);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .result {
+      margin-top: 30px;
+      background-color: #fff;
+      padding: 25px 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.5s ease-out;
+      font-family: 'Open Sans', sans-serif;
+      color: #333;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    .result h3 {
+      font-size: 1.8em;
+      font-weight: 700;
+      color: #4caf50;
+      margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .result p {
+      font-size: 1.1em;
+      margin-bottom: 15px;
+      line-height: 1.8;
+      text-align: left;
+    }
+
+    .result span {
+      font-weight: 700;
+      color: #e91e63;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      font-size: 1.2em;
+      color: #333;
+      animation: loadingAnimation 1.5s infinite ease-in-out;
+    }
+
+    @keyframes loadingAnimation {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      button {
+        width: 45%;
+      }
+    }
+    #title{
+      color:darkblue ;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h2 id="title">Life Clock</h2>
+  </header>
+
+  <main>
+    <div class="container">
+      <form id="healthForm">
+        <fieldset>
+          <legend>Enter Your Details</legend>
+
+          <label for="age">Age:</label>
+          <input type="number" id="age" name="age" aria-required="true" placeholder="Enter your age (1-120)" required />
+
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender" aria-required="true" required>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+
+          <label for="height_unit">Height Unit:</label>
+          <select id="height_unit" name="height_unit" aria-required="true" required>
+            <option value="meters">Meters (m)</option>
+            <option value="feet">Feet & Inches (ft)</option>
+          </select>
+
+          <label for="height">Height:</label>
+          <input type="text" id="height" name="height" aria-required="true" placeholder="Enter height (e.g., 5'9&quot; or 1.75m)" required />
+
+          <label for="weight">Weight (in kg):</label>
+          <input type="number" id="weight" name="weight" aria-required="true" placeholder="Enter your weight in kg" required />
+
+          <label for="lifestyle">Lifestyle:</label>
+          <select id="lifestyle" name="lifestyle" aria-required="true" required>
+            <option value="sedentary">Sedentary</option>
+            <option value="active">Active</option>
+            <option value="very_active">Very Active</option>
+          </select>
+
+          <label for="goal">Health Goal (Optional):</label>
+          <input type="text" id="goal" name="goal" placeholder="E.g., Lose 5kg in 3 months or gain 5kg in 5 months" />
+        </fieldset>
+
+        <div class="button-group">
+          <button type="submit">Submit</button>
+          <button type="reset" id="clearBtn">Clear</button>
+        </div>
+      </form>
+
+      <div class="loading" id="loading" aria-live="polite">
+        Calculating your health prediction...
+      </div>
+      <div id="result" class="result" aria-live="polite"></div>
+      <div id="error" class="error" role="alert" aria-live="assertive"></div>
+    </div>
+  </main>
+
+  <footer>
+    <p style="text-align:center; font-size:0.9em; color:#666; margin-top:20px;">&copy; 2025 Health Predictor</p>
+  </footer>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const healthForm = document.getElementById("healthForm");
+      const loading = document.getElementById("loading");
+      const errorDiv = document.getElementById("error");
+      const resultDiv = document.getElementById("result");
+
+      healthForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+        // Show loading animation
+        loading.style.display = "block";
+        errorDiv.innerText = "";
+        resultDiv.innerHTML = "";
+
+        const age = parseInt(document.getElementById("age").value);
+        const height = document.getElementById("height").value.trim();
+        const heightUnit = document.getElementById("height_unit").value;
+        const weight = parseFloat(document.getElementById("weight").value);
+        const lifestyle = document.getElementById("lifestyle").value;
+        const goal = document.getElementById("goal").value.trim();
+
+        // Enhanced input validations
+        if (isNaN(age) || age <= 0 || age > 120) {
+          errorDiv.innerText = "Please enter a valid age (1-120).";
+          loading.style.display = "none";
+          return;
+        }
+        if (isNaN(weight) || weight <= 0) {
+          errorDiv.innerText = "Please enter a valid weight.";
+          loading.style.display = "none";
+          return;
+        }
+
+        let heightInMeters = 0;
+        if (heightUnit === "meters") {
+          heightInMeters = parseFloat(height);
+          if (isNaN(heightInMeters) || heightInMeters <= 0) {
+            errorDiv.innerText = "Please enter a valid height in meters.";
+            loading.style.display = "none";
+            return;
+          }
+        } else {
+          const heightParts = height.match(/^(\d+)'\s*(\d+)?/);
+          if (heightParts) {
+            const feet = parseInt(heightParts[1]);
+            const inches = heightParts[2] ? parseInt(heightParts[2]) : 0;
+            heightInMeters = convertFeetInchesToMeters(feet, inches);
+          } else {
+            errorDiv.innerText = "Enter height in feet and inches (e.g., 5'9\").";
+            loading.style.display = "none";
+            return;
+          }
+        }
+
+        // Calculate BMI & Prediction
+        const bmi = calculateBMI(weight, heightInMeters);
+        const yearOfDeath = predictYearOfDeath(age, bmi, lifestyle);
+        const healthAdvice = generateHealthAdvice(bmi, lifestyle, goal);
+        const dietAdvice = generateDietAdvice(bmi, lifestyle, goal);
+        const fitnessAdvice = generateFitnessAdvice(lifestyle);
+        const healthStatusClass = getHealthStatus(bmi, lifestyle);
+
+        // Save data to localStorage
+        const userData = { age, bmi, lifestyle, yearOfDeath };
+        localStorage.setItem("userHealthData", JSON.stringify(userData));
+
+        resultDiv.innerHTML = `
+          <h3>Prediction</h3>
+          <p>Your predicted year of death is: <span class="${healthStatusClass}">${yearOfDeath}</span></p>
+          <p><strong>Health Advice:</strong> ${healthAdvice}</p>
+          <p><strong>Diet Tips:</strong> ${dietAdvice}</p>
+          <p><strong>Fitness Advice:</strong> ${fitnessAdvice}</p>
+        `;
+
+        loading.style.display = "none";
+      });
+    });
+
+    function convertFeetInchesToMeters(feet, inches) {
+      return feet * 0.3048 + inches * 0.0254;
+    }
+
+    function calculateBMI(weight, height) {
+      return weight / (height * height);
+    }
+
+    function predictYearOfDeath(age, bmi, lifestyle) {
+      const basePrediction = 80; // Average lifespan prediction
+      let prediction = basePrediction - age;
+      if (bmi < 18.5) {
+        prediction -= 5;
+      } else if (bmi > 25) {
+        prediction -= 5;
+      }
+      if (lifestyle === "sedentary") {
+        prediction -= 5;
+      } else if (lifestyle === "very_active") {
+        prediction += 5;
+      }
+      const currentYear = new Date().getFullYear();
+      return currentYear + prediction;
+    }
+
+    function generateHealthAdvice(bmi, lifestyle, goal) {
+      let advice = "Maintain a balanced lifestyle.";
+      if (goal) {
+        advice = "Your goal: " + goal + ". Keep going!";
+      } else if (bmi < 18.5) {
+        advice = "You are underweight. Consider gaining weight.";
+      } else if (bmi > 25) {
+        advice = "You are overweight. Consider losing weight.";
+      } else if (lifestyle === "sedentary") {
+        advice = "Consider becoming more active to improve health.";
+      } else if (lifestyle === "very_active") {
+        advice = "Keep up the great work with your active lifestyle!";
+      }
+      return advice;
+    }
+
+    function generateDietAdvice(bmi, lifestyle, goal) {
+      let dietAdvice = "";
+      if (goal && goal.toLowerCase().includes("lose")) {
+        dietAdvice = "For weight loss, try eating more vegetables, lean proteins (like chicken and fish), and avoiding processed foods. Include whole grains like brown rice and quinoa.";
+      } else if (goal && goal.toLowerCase().includes("gain")) {
+        dietAdvice = "For weight gain, include calorie-dense foods like nuts, seeds, avocado, and healthy oils. Include a lot of lean protein and complex carbs (like oats and sweet potatoes).";
+      } else if (bmi < 18.5) {
+        dietAdvice = "For underweight individuals, focus on consuming nutrient-dense foods such as avocados, nuts, and protein-rich meals.";
+      } else if (bmi > 25) {
+        dietAdvice = "For overweight individuals, focus on a balanced diet with plenty of vegetables, fruits, and lean proteins, while cutting back on sugary foods and refined carbs.";
+      } else {
+        dietAdvice = "For maintenance, keep a balanced diet with lean proteins, complex carbs, healthy fats, and plenty of vegetables.";
+      }
+      return dietAdvice;
+    }
+
+    function generateFitnessAdvice(lifestyle) {
+      let fitnessAdvice = "";
+      if (lifestyle === "sedentary") {
+        fitnessAdvice = "Start with simple activities like walking, light jogging, or cycling. Aim for at least 30 minutes of moderate exercise most days of the week.";
+      } else if (lifestyle === "active") {
+        fitnessAdvice = "Incorporate a mix of strength training and cardiovascular exercises to improve muscle tone and cardiovascular health.";
+      } else if (lifestyle === "very_active") {
+        fitnessAdvice = "You are already very active! Keep challenging yourself with advanced routines, strength training, and cardio for overall fitness.";
+      }
+      return fitnessAdvice;
+    }
+
+    function getHealthStatus(bmi, lifestyle) {
+      if (bmi < 18.5) {
+        return "underweight";
+      } else if (bmi >= 18.5 && bmi <= 24.9) {
+        return "healthy";
+      } else {
+        return "overweight";
+      }
+    }
+  </script>
+</body>
+</html>
